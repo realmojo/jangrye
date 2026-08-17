@@ -1,0 +1,2010 @@
+@import "tailwindcss";
+
+/* ==========================================================================
+   전역 기본값
+   keywordegg 의 콘텐츠 스킨을 그대로 옮겼다. 게시판·도구 페이지용 레거시
+   스타일(#gb-*, .legacy-shell)은 이 사이트에 해당 화면이 없어 제외했다.
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: none;
+}
+
+body {
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  max-width: 100%;
+}
+
+/* ==========================================================================
+   콘텐츠 사이트 스킨 (2026-08 개편)
+   keywordegg 계열 공통 스킨.
+   다크 셸(배경·헤더·푸터) 위에 밝은 카드/본문을 얹는 구조.
+   ========================================================================== */
+
+:root {
+  --c-primary: #3f8f8a;
+  --c-primary-light: #eaf4f3;
+  --c-primary-dark: #2a5f5c;
+  --c-accent: #9ccfca;
+  --c-bg: #1e2628;
+  --c-surface: #f9fbfa;
+  --c-dark-surface: #161d1f;
+  --c-text: #2a2a2a;
+  --c-text-sub: #6b7280;
+  --c-line: #ededea;
+
+  /* 진료비 묶음 뱃지 */
+  --cat-item: #c49a1a;
+  --cat-region: #5a9e6f;
+  --cat-place: #7a8fc4;
+
+  /* 요금 비교용 (전국보다 싸다 / 비싸다) */
+  --price-low: #2f8f5b;
+  --price-high: #c05555;
+
+  /* 요금 강조 (관내가 싸다 / 관외가 비싸다) */
+  --fee-low: #2f8f5b;
+  --fee-low-bg: #e7f4ec;
+  --fee-high: #c04242;
+  --fee-high-bg: #fbeaea;
+  /* 오래된 자료 표시 */
+  --stale: #b8860b;
+  --stale-bg: #fbf3e0;
+
+  --r-md: 14px;
+  --r-lg: 18px;
+  --sh-sm: 0 1px 3px rgb(0 0 0 / 0.06);
+  --sh-md: 0 4px 16px rgb(0 0 0 / 0.08);
+
+  --w-home: 880px;
+  --w-single: 680px;
+  --font-content: "Pretendard Variable", Pretendard, -apple-system,
+    BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", system-ui,
+    sans-serif;
+}
+
+body {
+  background: var(--c-bg);
+  color: var(--c-text);
+  font-family: var(--font-content);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---- 헤더 ---- */
+.site-header {
+  background: var(--c-dark-surface);
+  border-bottom: 1px solid #362e3a;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.site-header__inner {
+  max-width: var(--w-home);
+  margin: 0 auto;
+  padding: 0 20px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.site-logo {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 19px;
+  font-weight: 800;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.site-nav {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex: 1;
+}
+
+.site-nav a {
+  padding: 7px 13px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #b3bcc8;
+  border-radius: 20px;
+  transition: color 0.15s, background 0.15s;
+}
+
+.site-nav a:hover {
+  color: #fff;
+}
+
+.site-nav a.is-active {
+  color: var(--c-accent);
+  background: rgb(156 207 202 / 0.15);
+}
+
+/* ---- 본문 컨테이너 ---- */
+.site-main {
+  max-width: var(--w-home);
+  margin: 0 auto;
+  padding: 24px 20px 60px;
+  min-height: 60vh;
+}
+
+/* ---- 섹션 제목 ---- */
+.sec-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.sec-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 20px;
+  font-weight: 800;
+  color: #fff;
+}
+
+.sec-title::before {
+  content: "";
+  width: 4px;
+  height: 20px;
+  background: var(--c-primary);
+  border-radius: 2px;
+}
+
+.sec-more {
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #999;
+  border: 1px solid #4a3f4f;
+  border-radius: 20px;
+  transition: all 0.2s;
+}
+
+.sec-more:hover {
+  background: rgb(156 207 202 / 0.15);
+  border-color: var(--c-accent);
+  color: var(--c-accent);
+}
+
+/* ---- 카테고리 뱃지 ---- */
+.cat-badge {
+  display: inline-block;
+  padding: 3px 9px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.cat-badge--item {
+  color: var(--cat-item);
+  background: rgb(196 154 26 / 0.12);
+}
+
+.cat-badge--place {
+  color: var(--cat-place);
+  background: rgb(122 143 196 / 0.12);
+}
+
+/* 지역 뱃지 (시도명) */
+.cat-badge--region {
+  color: var(--c-primary-dark);
+  background: rgb(63 143 138 / 0.14);
+}
+
+/* ---- 카드 공통 ---- */
+.card {
+  display: block;
+  background: var(--c-surface);
+  border-radius: var(--r-md);
+  overflow: hidden;
+  box-shadow: var(--sh-sm);
+  transition: transform 0.2s, box-shadow 0.2s;
+  color: inherit;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--sh-md);
+}
+
+.card__img {
+  aspect-ratio: 16 / 9;
+  background: linear-gradient(135deg, #e4efee, #cfe2df);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  overflow: hidden;
+}
+
+.card__img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card__body {
+  padding: 14px 16px 16px;
+}
+
+.card__title {
+  margin: 7px 0 6px;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.45;
+  color: var(--c-text);
+  word-break: keep-all;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.card__excerpt {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--c-text-sub);
+  word-break: keep-all;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.card__meta {
+  margin-top: 10px;
+  font-size: 12px;
+  color: #9aa1a8;
+}
+
+/* ---- 히어로 ---- */
+.hero {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 36px;
+}
+
+.hero .card--main .card__img {
+  aspect-ratio: 16 / 10;
+  font-size: 48px;
+}
+
+.hero .card--main .card__title {
+  font-size: 22px;
+  font-weight: 800;
+}
+
+/* ---- 그리드 / 리스트 ---- */
+.post-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.post-grid--3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.post-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.post-row {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 14px;
+  background: var(--c-surface);
+  border-radius: var(--r-md);
+  overflow: hidden;
+  box-shadow: var(--sh-sm);
+  transition: transform 0.2s, box-shadow 0.2s;
+  color: inherit;
+}
+
+.post-row:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--sh-md);
+}
+
+.post-row__img {
+  aspect-ratio: 4 / 3;
+  background: linear-gradient(135deg, #e4efee, #cfe2df);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+}
+
+.post-row__img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.post-row__body {
+  padding: 12px 16px 12px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* ---- 카테고리 진입 카드 ---- */
+.bento-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 8px;
+}
+
+.bento-card {
+  display: block;
+  padding: 22px 24px;
+  background: var(--c-surface);
+  border: 1px solid var(--c-line);
+  border-radius: var(--r-lg);
+  box-shadow: var(--sh-sm);
+  transition: all 0.2s;
+  color: inherit;
+}
+
+.bento-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--sh-md);
+}
+
+.bento-card__icon {
+  font-size: 26px;
+}
+
+.bento-card__title {
+  margin: 8px 0 4px;
+  font-size: 17px;
+  font-weight: 800;
+}
+
+.bento-card__desc {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--c-text-sub);
+  word-break: keep-all;
+}
+
+/* ---- 페이지 헤더(카테고리) ---- */
+.page-head {
+  margin-bottom: 22px;
+}
+
+.page-head h1 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 24px;
+  font-weight: 800;
+  color: #fff;
+}
+
+.page-head p {
+  margin-top: 8px;
+  font-size: 14px;
+  line-height: 1.7;
+  color: #9aa1a8;
+  word-break: keep-all;
+}
+
+/* ==========================================================================
+   광고 영역
+
+   높이를 미리 잡아두지 않는다. 애드센스가 슬롯 설정과 화면 폭에 맞춰
+   스스로 크기를 정하도록 두고, 채울 광고가 없을 때만 자리를 없앤다.
+   ========================================================================== */
+
+/* **반드시 우리 슬롯 안으로 한정한다.**
+
+   전역 `ins.adsbygoogle` 로 걸면 구글 자동광고가 body 에 직접 꽂는
+   사이드 레일까지 잡힌다. 레일은 position: fixed 인데 인라인 스타일에 width 가
+   없다(display·z-index·position·left·top·opacity 만 넣는다). 그래서 여기 width
+   가 그대로 먹으면 **포함 블록인 뷰포트 폭**으로 부풀어, 실제 소재는 그 안의
+   160x600 인데 ins 자체는 1581px 짜리 투명 판이 된다. 그게 z-index 2147483647
+   position: fixed 로 화면 전체를 덮으면서 본문 클릭을 먹는다.
+
+   실제로 겪은 증상: 광고는 왼쪽 여백에 정상으로 보이는데 페이지 가운데가
+   눌리지 않고, DevTools 로 레일 ins 를 잡으면 1581x606 으로 나온다. */
+.ad-slot ins.adsbygoogle,
+.entry-content ins.adsbygoogle {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+}
+
+/* 미채움 슬롯을 없애는 규칙은 파일 맨 끝에 있다.
+   아래 `.ad-slot ins.adsbygoogle { display: block !important }` 보다
+   뒤에 와야 이기기 때문이다. (검색어: data-ad-status unfill) */
+
+/* ---- 글 상세 ---- */
+.single-wrap {
+  max-width: var(--w-single);
+  margin: 0 auto;
+}
+
+.single-article {
+  background: var(--c-surface);
+  border-radius: var(--r-lg);
+  box-shadow: var(--sh-md);
+  overflow: hidden;
+}
+
+.single-article__inner {
+  padding: 32px 36px 40px;
+}
+
+.entry-header {
+  border-bottom: 1px solid var(--c-line);
+  margin-bottom: 26px;
+}
+
+.entry-title {
+  margin: 10px 0 12px;
+  font-size: 28px;
+  font-weight: 800;
+  line-height: 1.35;
+  color: var(--c-text);
+  word-break: keep-all;
+}
+
+.entry-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-size: 13px;
+  color: #9aa1a8;
+}
+
+/* ---- 글 상세: 제목 아래 메타 줄 ---- */
+.entry-header__bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.entry-meta__sep {
+  width: 1px;
+  height: 12px;
+  background: #d8dad4;
+}
+
+.entry-cat {
+  flex-shrink: 0;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* ---- 대표 이미지 ---- */
+.entry-thumb {
+  margin: 26px 0 28px;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: var(--r-md);
+  background: linear-gradient(135deg, #e4efee, #cfe2df);
+}
+
+.entry-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ---- 제목 아래 소개글 ---- */
+.entry-lead {
+  margin: 0 0 4px;
+  padding: 16px 18px;
+  background: #f3f4f1;
+  border-left: 3px solid var(--c-accent);
+  border-radius: 0 10px 10px 0;
+  font-size: 17px;
+  line-height: 1.8;
+  color: #4a4f45;
+  word-break: keep-all;
+}
+
+/* ---- CTA 버튼 ---- */
+.cta-block {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin: 32px 0;
+  text-align: center;
+}
+
+.cta-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 68px;
+  padding: 20px 24px;
+  border-radius: var(--r-md);
+  /* 페이지 배경과 같은 색 + 흰 글씨 */
+  background: var(--c-bg);
+  box-shadow: 0 4px 14px rgb(33 40 50 / 0.28);
+  color: #fff;
+  font-size: 19px;
+  font-weight: 700;
+  line-height: 1.3;
+  text-decoration: none;
+  word-break: keep-all;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.cta-btn::after {
+  content: "→";
+  font-size: 1.05em;
+  line-height: 1;
+}
+
+.cta-btn:hover {
+  transform: translateY(-1px);
+  background: #2a3441;
+  box-shadow: 0 6px 18px rgb(33 40 50 / 0.36);
+}
+
+/* ---- 자주 묻는 질문 ---- */
+.faq {
+  margin-top: 2.5em;
+}
+
+.faq__title {
+  margin-bottom: 16px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--c-line);
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--c-text);
+}
+
+.faq__item {
+  margin-bottom: 20px;
+}
+
+.faq__q {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 8px;
+  font-size: 19px;
+  font-weight: 700;
+  line-height: 1.5;
+  color: var(--c-text);
+  word-break: keep-all;
+}
+
+.faq__q::before {
+  content: "Q.";
+  color: var(--c-primary);
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+.faq__a {
+  font-size: 18px;
+  line-height: 1.9;
+  color: #4a4f45;
+  word-break: keep-all;
+}
+
+/* 목차 */
+.toc {
+  margin: 0 0 28px;
+  padding: 18px 22px;
+  background: var(--c-primary-light);
+  border: 1px solid var(--c-line);
+  border-radius: var(--r-md);
+}
+
+.toc__title {
+  margin-bottom: 10px;
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--c-primary-dark);
+}
+
+.toc__list {
+  margin: 0;
+  padding-left: 1.2em;
+  list-style: decimal;
+  list-style-position: outside;
+  font-size: 15px;
+  color: #8a8f83;
+}
+
+.toc__list li {
+  margin-bottom: 5px;
+  line-height: 1.65;
+}
+
+.toc__list a {
+  color: var(--c-primary-dark);
+  line-height: 1.5;
+  word-break: keep-all;
+}
+
+.toc__list a:hover {
+  text-decoration: underline;
+}
+
+.toc__list li[data-depth="3"] {
+  padding-left: 14px;
+  font-size: 14px;
+}
+
+/* 본문 타이포그래피 */
+.entry-content {
+  font-size: 19px;
+  line-height: 1.85;
+  color: var(--c-text);
+  word-break: keep-all;
+}
+
+.entry-content > * + * {
+  margin-top: 1.2em;
+}
+
+.entry-content p {
+  margin-bottom: 1.3em;
+}
+
+.entry-content h2 {
+  margin: 2.2em 0 0.7em;
+  padding-left: 13px;
+  border-left: 4px solid var(--c-primary);
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1.4;
+  scroll-margin-top: 76px;
+}
+
+.entry-content h3 {
+  margin: 1.7em 0 0.5em;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.45;
+  scroll-margin-top: 76px;
+}
+
+.entry-content h4 {
+  margin: 1.4em 0 0.4em;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.entry-content ul,
+.entry-content ol {
+  margin: 1em 0 1.3em;
+  padding-left: 22px;
+}
+
+.entry-content ul {
+  list-style: disc;
+}
+
+.entry-content ol {
+  list-style: decimal;
+}
+
+.entry-content li {
+  margin-bottom: 0.45em;
+  line-height: 1.8;
+}
+
+.entry-content a {
+  color: var(--c-primary);
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: rgb(63 143 138 / 0.35);
+  text-underline-offset: 3px;
+}
+
+/* CTA 버튼과 목차 링크는 본문 링크 규칙(색·밑줄)을 따르지 않는다.
+   .entry-content a 가 .cta-btn 보다 우선순위가 높아 명시적으로 덮어쓴다. */
+.entry-content a.cta-btn,
+a.cta-btn {
+  color: #fff;
+  text-decoration: none;
+}
+
+.entry-content .toc__list a {
+  color: var(--c-primary-dark);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.entry-content .toc__list a:hover {
+  text-decoration: underline;
+}
+
+.entry-content strong {
+  font-weight: 700;
+}
+
+.entry-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+
+.entry-content blockquote {
+  margin: 1.4em 0;
+  padding: 14px 18px;
+  border-left: 3px solid var(--c-accent);
+  background: #f2f4ef;
+  border-radius: 0 8px 8px 0;
+  color: #4b5343;
+}
+
+.entry-content pre {
+  margin: 1.4em 0;
+  padding: 14px 16px;
+  overflow-x: auto;
+  background: #f1f2f0;
+  border: 1px solid var(--c-line);
+  border-radius: 8px;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.entry-content code {
+  padding: 2px 6px;
+  background: #eff0ed;
+  border-radius: 4px;
+  font-size: 0.92em;
+}
+
+.entry-content pre code {
+  padding: 0;
+  background: none;
+}
+
+.entry-content table {
+  width: 100%;
+  margin: 1.4em 0;
+  border-collapse: collapse;
+  font-size: 17px;
+}
+
+.entry-content th,
+.entry-content td {
+  padding: 11px 14px;
+  border: 1px solid #e2e5df;
+  text-align: left;
+  vertical-align: top;
+}
+
+.entry-content th {
+  background: #f2f4ef;
+  font-weight: 700;
+}
+
+.entry-content hr {
+  margin: 2em 0;
+  border: 0;
+  border-top: 1px solid var(--c-line);
+}
+
+/* 태그 */
+.entry-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 32px;
+  padding-top: 20px;
+  border-top: 1px solid var(--c-line);
+}
+
+.entry-tags a {
+  padding: 5px 11px;
+  background: #f1f2ef;
+  border-radius: 14px;
+  font-size: 12px;
+  color: var(--c-text-sub);
+}
+
+/* 관련글 */
+.related {
+  margin-top: 36px;
+}
+
+.related {
+  margin-top: 36px;
+  padding-top: 28px;
+  border-top: 1px solid var(--c-line);
+}
+
+.related__title {
+  position: relative;
+  margin: 0 0 16px;
+  padding-left: 14px;
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--c-text);
+}
+
+.related__title::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 2px;
+  bottom: 2px;
+  width: 4px;
+  background: var(--c-primary);
+  border-radius: 2px;
+}
+
+.related__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.related__item {
+  display: block;
+  color: var(--c-text);
+}
+
+.related__thumb {
+  aspect-ratio: 16 / 9;
+  margin-bottom: 8px;
+  border-radius: 10px;
+  overflow: hidden;
+  background: linear-gradient(135deg, #e4efee, #cfe2df);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+}
+
+.related__thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.related__name {
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.45;
+  word-break: keep-all;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ---- 글 하단 정보 ---- */
+.entry-footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 28px;
+  padding-top: 16px;
+  border-top: 1px solid var(--c-line);
+  font-size: 13px;
+  color: #9aa1a8;
+}
+
+.entry-footer a {
+  color: var(--c-primary);
+  font-weight: 600;
+}
+
+/* ---- 페이지네이션 ---- */
+.pager {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  margin-top: 32px;
+}
+
+.pager a,
+.pager span {
+  min-width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 10px;
+  border: 1px solid #4a3f4f;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #b3bcc8;
+}
+
+.pager a:hover {
+  border-color: var(--c-accent);
+  color: var(--c-accent);
+}
+
+.pager .is-current {
+  background: var(--c-primary);
+  border-color: var(--c-primary);
+  color: #fff;
+  font-weight: 700;
+}
+
+/* ---- 빈 목록 ---- */
+.empty-box {
+  padding: 60px 20px;
+  text-align: center;
+  background: var(--c-surface);
+  border-radius: var(--r-md);
+  color: var(--c-text-sub);
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+/* ---- 푸터 ---- */
+.site-footer {
+  background: var(--c-dark-surface);
+  border-top: 1px solid #2c3542;
+  color: #94a0af;
+  padding: 40px 20px 32px;
+}
+
+.site-footer__inner {
+  max-width: var(--w-home);
+  margin: 0 auto;
+}
+
+.site-footer__top {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr 1fr 1fr;
+  gap: 28px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid #362e3a;
+}
+
+.site-footer__logo {
+  font-size: 17px;
+  font-weight: 800;
+  color: #fff;
+}
+
+.site-footer__desc {
+  margin-top: 10px;
+  font-size: 13px;
+  line-height: 1.7;
+  word-break: keep-all;
+}
+
+.site-footer__col h3 {
+  margin-bottom: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #d8dde3;
+}
+
+.site-footer__col ul {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  font-size: 13px;
+}
+
+.site-footer__col a:hover {
+  color: var(--c-accent);
+}
+
+.site-footer__bottom {
+  padding-top: 20px;
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.site-footer__note {
+  margin-top: 6px;
+  color: #7d8998;
+}
+
+/* ==========================================================================
+   반응형
+   ========================================================================== */
+@media (max-width: 768px) {
+  .site-header__inner {
+    height: 52px;
+    padding: 0 12px;
+    gap: 10px;
+  }
+
+  .site-logo {
+    font-size: 17px;
+  }
+
+  .site-nav {
+    gap: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .site-nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .site-nav a {
+    padding: 5px 9px;
+    font-size: 13px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .site-main {
+    padding: 18px 14px 44px;
+  }
+
+  .hero,
+  .post-grid,
+  .post-grid--3,
+  .bento-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero .card--main .card__title {
+    font-size: 19px;
+  }
+
+  .post-row {
+    grid-template-columns: 104px 1fr;
+  }
+
+  .single-article__inner {
+    padding: 24px 20px 32px;
+  }
+
+  .entry-title {
+    font-size: 23px;
+  }
+
+  .entry-content {
+    font-size: 18px;
+  }
+
+  .entry-content h2 {
+    font-size: 21px;
+  }
+
+  .entry-content h3 {
+    font-size: 19px;
+  }
+
+  .entry-content table {
+    display: block;
+    overflow-x: auto;
+    font-size: 14px;
+  }
+
+  .site-footer__top {
+    grid-template-columns: 1fr 1fr;
+    gap: 22px;
+  }
+}
+
+@media (max-width: 480px) {
+  .site-main {
+    padding: 14px 0px 36px;
+  }
+
+  .single-article__inner {
+    padding: 20px 16px 28px;
+  }
+
+  .entry-title {
+    font-size: 21px;
+  }
+
+  .entry-content {
+    font-size: 17px;
+  }
+
+  .entry-content h2 {
+    font-size: 20px;
+  }
+
+  .entry-content h3 {
+    font-size: 18px;
+  }
+
+  .post-row {
+    grid-template-columns: 92px 1fr;
+  }
+
+  .site-footer__top {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---- 글 상세 템플릿 반응형 ---- */
+@media (max-width: 768px) {
+  .entry-header__bottom {
+    gap: 8px;
+  }
+
+  .cta-btn {
+    min-height: 60px;
+    padding: 16px 18px;
+    font-size: 17px;
+  }
+
+  .related__grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .faq__title {
+    font-size: 18px;
+  }
+
+  .faq__q {
+    font-size: 16px;
+  }
+
+  .faq__a {
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .cta-btn {
+    min-height: 56px;
+    font-size: 16px;
+  }
+
+  .entry-thumb {
+    margin: 20px 0 22px;
+  }
+}
+/* ==========================================================================
+   지역 페이지
+   카드·뱃지·타이포는 위 콘텐츠 스킨을 그대로 쓰고, 여기서는 지역 페이지에만
+   나오는 요소(통계 타일, 등급 뱃지, 기관 표, 시도별 목록)를 더한다.
+   ========================================================================== */
+
+
+/* 페이지 제목 위에 얹는 지역/카테고리 뱃지 */
+.page-head .cat-badge {
+  margin-bottom: 9px;
+}
+
+/* ---- 통계 타일 ---- */
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.stat-tile {
+  background: var(--c-surface);
+  border-radius: var(--r-md);
+  box-shadow: var(--sh-sm);
+  padding: 16px 14px;
+  text-align: center;
+}
+
+.stat-tile__label {
+  margin: 0 0 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--c-text-sub);
+}
+
+.stat-tile__value {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--c-primary-dark);
+  line-height: 1.2;
+}
+
+.stat-tile__sub {
+  margin: 5px 0 0;
+  font-size: 11px;
+  color: var(--c-text-sub);
+}
+
+/* ---- 밝은 판(지역 페이지 섹션) ---- */
+.panel {
+  background: var(--c-surface);
+  border-radius: var(--r-md);
+  box-shadow: var(--sh-sm);
+  padding: 20px 22px;
+  margin-bottom: 20px;
+}
+
+.panel__title {
+  margin: 0 0 4px;
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--c-text);
+}
+
+.panel__desc {
+  margin: 0 0 14px;
+  font-size: 13px;
+  color: var(--c-text-sub);
+  line-height: 1.7;
+}
+
+/* ---- 기관 표 ---- */
+.pr-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.pr-table th,
+.pr-table td {
+  padding: 10px 8px;
+  border-bottom: 1px solid var(--c-line);
+  text-align: left;
+  vertical-align: middle;
+}
+
+.pr-table th {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--c-text-sub);
+  border-bottom: 2px solid #e2e4de;
+  white-space: nowrap;
+}
+
+.pr-table td.is-num,
+.pr-table th.is-num {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.pr-table__name {
+  font-weight: 600;
+  word-break: keep-all;
+}
+
+.pr-table__meta {
+  display: block;
+  margin-top: 2px;
+  font-size: 12px;
+  color: var(--c-text-sub);
+}
+
+.table-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ---- 막대 (영역별 점수 비교) ---- */
+.bar-row {
+  display: grid;
+  grid-template-columns: 110px 1fr 92px;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  font-size: 13px;
+}
+
+.bar-row__label {
+  color: var(--c-text-sub);
+  font-weight: 600;
+}
+
+.bar-row__track {
+  position: relative;
+  height: 10px;
+  border-radius: 5px;
+  background: #eceee8;
+  overflow: hidden;
+}
+
+.bar-row__fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  border-radius: 5px;
+  background: var(--c-primary);
+}
+
+.bar-row__value {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  color: var(--c-text);
+  font-weight: 700;
+}
+
+.bar-row__diff {
+  margin-left: 5px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.bar-row__diff.is-up { color: var(--price-high); }
+.bar-row__diff.is-down { color: var(--price-low); }
+
+/* ---- 시도별 지역 목록 (지역 허브) ---- */
+.sido-block {
+  background: var(--c-surface);
+  border-radius: var(--r-md);
+  box-shadow: var(--sh-sm);
+  padding: 18px 20px;
+  margin-bottom: 14px;
+}
+
+.sido-block__title {
+  margin: 0 0 12px;
+  font-size: 16px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sido-block__count {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--c-text-sub);
+}
+
+.region-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.region-chips a {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 12px;
+  border: 1px solid var(--c-line);
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #495244;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.region-chips a:hover {
+  background: var(--c-primary-light);
+  border-color: var(--c-accent);
+}
+
+.region-chips a[data-empty="true"] {
+  color: #a4a9a0;
+}
+
+/* ---- 버튼 두 개를 나란히 (기관 상세 상단) ---- */
+.cta-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin: 26px 0;
+}
+
+.cta-row .cta-btn {
+  min-height: 60px;
+  padding: 16px 18px;
+  font-size: 17px;
+}
+
+/* 보조 버튼. 밝은 본문판 위에 얹히므로 테두리만 쓴다. */
+.entry-content a.cta-btn--ghost,
+.cta-btn--ghost {
+  background: transparent;
+  color: var(--c-primary-dark);
+  border: 1.5px solid var(--c-accent);
+  box-shadow: none;
+}
+
+.cta-btn--ghost:hover {
+  background: var(--c-primary-light);
+}
+
+/* 주 버튼 아래 보조 링크 줄 */
+.cta-row__links {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px 16px;
+  margin: 2px 0 0;
+  font-size: 14px;
+}
+
+.cta-row__links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--c-primary-dark);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: rgb(63 143 138 / 0.35);
+}
+
+.cta-row__links a:hover {
+  text-decoration-color: var(--c-primary);
+}
+
+/* ---- 요금 분포에서의 위치 ---- */
+.price-range {
+  margin: 20px 0 8px;
+}
+
+.price-range__track {
+  position: relative;
+  height: 8px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #dfeee5, #f6e2e7);
+  margin: 26px 0 8px;
+}
+
+.price-range__marker {
+  position: absolute;
+  top: -6px;
+  width: 4px;
+  height: 20px;
+  border-radius: 2px;
+  background: var(--c-primary);
+  transform: translateX(-2px);
+}
+
+.price-range__marker::after {
+  content: attr(data-label);
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--c-primary-dark);
+}
+
+.price-range__ends {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--c-text-sub);
+}
+
+.cta-row__note {
+  grid-column: 1 / -1;
+  margin: 0;
+  font-size: 13px;
+  color: var(--c-text-sub);
+  text-align: center;
+  line-height: 1.6;
+}
+
+@media (max-width: 560px) {
+  .cta-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---- 이동 경로 (기관 상세 상단) ----
+   밝은 본문판 위에 얹히므로 어두운 글자를 쓴다. */
+.crumbs {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 13px;
+  color: #9aa295;
+}
+
+.crumbs a {
+  color: #6f7a68;
+}
+
+.crumbs a:hover {
+  color: var(--c-primary);
+  text-decoration: underline;
+}
+
+/* 본문 표의 행 머리(th scope="row")가 폭을 다 먹지 않게 한다 */
+.entry-content tbody th[scope="row"] {
+  width: 28%;
+  white-space: nowrap;
+}
+
+/* 좁은 화면에서는 표 안에서 가로 스크롤되게 한다.
+   페이지 전체가 가로로 밀리는 것보다 낫다. */
+@media (max-width: 640px) {
+  .entry-content table {
+    display: block;
+    overflow-x: auto;
+    font-size: 15px;
+  }
+
+  .entry-content th,
+  .entry-content td {
+    padding: 9px 10px;
+  }
+
+  .entry-content tbody th[scope="row"] {
+    width: auto;
+  }
+}
+
+/* 기관 표 안의 상세 링크 */
+.pr-table__link {
+  color: var(--c-primary-dark);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-color: rgb(63 143 138 / 0.35);
+}
+
+.pr-table__link:hover {
+  text-decoration-color: var(--c-primary);
+}
+
+/* ---- 상대 지표 (전체 평균 대비) ----
+   지역·종별 값이 전체 기준보다 위인지 아래인지 한눈에 보이게 한다. */
+.rel {
+  display: inline-block;
+  min-width: 56px;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.rel--up {
+  color: var(--price-high);
+  background: rgb(192 85 85 / 0.1);
+}
+
+.rel--down {
+  color: var(--price-low);
+  background: rgb(47 143 91 / 0.1);
+}
+
+.rel--flat {
+  color: var(--c-text-sub);
+  background: rgb(0 0 0 / 0.04);
+}
+
+/* ---- 주의 문구 ---- */
+.notice {
+  background: #fff8e8;
+  border: 1px solid #f0e0b8;
+  border-radius: var(--r-md);
+  padding: 14px 16px;
+  margin-bottom: 20px;
+  font-size: 13px;
+  line-height: 1.75;
+  color: #6b5a2a;
+}
+
+.notice strong {
+  font-weight: 700;
+}
+
+.notice--muted {
+  background: #f3f4f1;
+  border-color: #e2e4de;
+  color: #5c6357;
+}
+
+/* ---- 인접 지역 이동 ---- */
+.nearby-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+@media (max-width: 768px) {
+  .stat-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .panel {
+    padding: 16px 14px;
+  }
+
+  .bar-row {
+    grid-template-columns: 84px 1fr 82px;
+    font-size: 12px;
+  }
+
+  .pr-table {
+    font-size: 13px;
+  }
+}
+
+/* 광고는 위아래 콘텐츠와 떨어뜨린다.
+
+   .ad-slot 에 규칙이 하나도 없어서 허브·홈 화면에서 광고가 바로 아래 패널에
+   딱 붙어 있었다. .page-head 는 margin-bottom 을 주지만 .sido-block 과
+   .panel 은 margin-top 이 없어서, 그 사이에 들어간 광고의 아래쪽 간격이 0 이
+   된다. 붙어 있으면 보기에도 나쁘고 광고가 콘텐츠의 일부처럼 읽힌다.
+
+   본문(.entry-content) 안에서는 `> * + *` 가 1.2em 을 주지만 값이 제각각이라
+   여기서 함께 통일한다. 이 규칙이 그 뒤에 오므로 명시도가 같아도 이긴다. */
+.ad-slot {
+  margin: 28px 0;
+}
+
+/* 광고 크기는 애드센스가 정한다.
+   예전에는 width/max-width/margin-left 를 !important 로 덮어썼는데, 그러면
+   구글이 전체폭 확장을 위해 ins 에 직접 넣는 `width: 390px; margin-left: -16px`
+   가 무효화된다. 구글은 390px 기준으로 소재를 받아오는데 자리는 358px 이라
+   크기가 어긋났고, 그걸 JS 가 transform 으로 또 보정하면서 3중으로 충돌했다.
+   여기서는 정렬만 잡고 크기에는 손대지 않는다. */
+.ad-slot ins.adsbygoogle,
+.entry-content .adsbygoogle {
+  display: block !important;
+  text-align: center;
+}
+
+/* ==========================================================================
+   채울 광고가 없는 슬롯은 빈 공간을 남기지 않는다.
+
+   - 구글은 미채움을 unfilled 뿐 아니라 unfill-optimized 로도 표기하므로
+     정확히 일치가 아닌 접두사(^=)로 잡는다.
+   - 위 `.ad-slot ins.adsbygoogle { display: block !important }` 과 명시도가
+     같아서, 반드시 그 뒤에 와야 이긴다. 이 블록을 위로 옮기면 미채움 슬롯이
+     다시 빈 자리로 남으니 파일 끝에 두는 위치를 유지할 것.
+   - **우리가 넣은 슬롯에만 건다.** 예전에는 스코프 없는 선택자가 섞여 있어서
+     구글 자동광고(사이드 레일·앵커)까지 겨냥했다. 실제로 가려지지는 않는다 —
+     레일은 인라인 `display: block !important` 를 달고 오고, 인라인 !important
+     가 스타일시트 !important 를 이기기 때문이다. 그래도 남의 요소를 겨냥한
+     규칙은 언젠가 사고를 내므로 스코프를 붙여 둔다.
+   ========================================================================== */
+.ad-slot ins.adsbygoogle[data-ad-status^="unfill"],
+.entry-content .adsbygoogle[data-ad-status^="unfill"] {
+  display: none !important;
+  min-height: 0 !important;
+  background: transparent !important;
+}
+
+/* 위에서 슬롯을 숨기면 .ad-slot 만 남아 여백이 뜬다. 그 여백도 걷어낸다. */
+.ad-slot:has(ins.adsbygoogle[data-ad-status^="unfill"]) {
+  margin: 0 !important;
+}
+
+/* ==========================================================================
+   장사시설 화면
+
+   유족이 상중에 보는 화면이다. 장식을 줄이고, 값과 위치가 먼저 읽히게 한다.
+   ========================================================================== */
+
+/* 화면에는 없고 스크린리더만 읽는 텍스트 */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---- 이름-값 목록 (주소·전화·규모) ---- */
+.kv {
+  display: grid;
+  grid-template-columns: 96px 1fr;
+  gap: 9px 14px;
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+.kv dt {
+  color: var(--c-text-sub);
+  font-weight: 600;
+}
+
+.kv dd {
+  margin: 0;
+  color: var(--c-text);
+  word-break: keep-all;
+}
+
+.kv dd a {
+  color: var(--c-primary-dark);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.kv__sub {
+  color: var(--c-text-sub);
+  font-size: 13px;
+}
+
+/* 지역구분 설명처럼 짧은 항목을 촘촘하게 */
+.kv--tight {
+  display: block;
+  margin-top: 14px;
+  font-size: 13px;
+}
+
+.kv--tight .kv__row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.kv--tight dt {
+  flex-shrink: 0;
+  min-width: 52px;
+  color: var(--c-primary-dark);
+}
+
+.kv--tight dd {
+  color: var(--c-text-sub);
+}
+
+/* ---- 관내/관외 격차 한 줄 ---- */
+.fee-gap {
+  margin: 14px 0 0;
+  padding: 12px 14px;
+  border-left: 3px solid var(--fee-high);
+  background: var(--fee-high-bg);
+  border-radius: 0 8px 8px 0;
+  font-size: 15px;
+  line-height: 1.7;
+  color: #6b3535;
+  word-break: keep-all;
+}
+
+/* ---- 판 안에 들어가는 판 (감면 대상 등) ---- */
+.panel--inset {
+  margin: 18px 0 0;
+  background: #f2f4f1;
+  box-shadow: none;
+  border: 1px solid var(--c-line);
+}
+
+.panel__title--sm {
+  font-size: 15px;
+}
+
+/* ---- 사진 ---- */
+.photo-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.photo-strip__item {
+  margin: 0;
+}
+
+.photo-strip__item img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: 10px;
+  background: #e8ebe6;
+  display: block;
+}
+
+.photo-strip__item figcaption {
+  margin-top: 5px;
+  font-size: 12px;
+  color: var(--c-text-sub);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ---- 가는 길 ---- */
+.route {
+  margin-bottom: 16px;
+}
+
+.route:last-of-type {
+  margin-bottom: 0;
+}
+
+.route__title {
+  margin: 0 0 6px;
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--c-primary-dark);
+}
+
+.route p {
+  margin: 0 0 3px;
+  font-size: 15px;
+  line-height: 1.7;
+  color: #4a4f45;
+  word-break: keep-all;
+}
+
+/* ---- 편의시설 ---- */
+.amenity-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin: 16px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.amenity-list li {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  border: 1px solid var(--c-line);
+}
+
+.amenity-list li[data-has="true"] {
+  color: var(--fee-low);
+  background: var(--fee-low-bg);
+  border-color: #cfe6d8;
+}
+
+.amenity-list li[data-has="false"] {
+  color: #9aa199;
+  background: #f4f5f2;
+}
+
+/* ---- 시설 소개 원문 ---- */
+.intro-text p {
+  margin: 0 0 6px;
+  font-size: 15px;
+  line-height: 1.75;
+  color: #4a4f45;
+  word-break: keep-all;
+}
+
+/* ---- 시설 카드 ---- */
+.fac-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.fac-card {
+  display: block;
+  padding: 16px 18px;
+  background: var(--c-surface);
+  border-radius: var(--r-md);
+  box-shadow: var(--sh-sm);
+  transition: transform 0.2s, box-shadow 0.2s;
+  color: inherit;
+}
+
+.fac-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--sh-md);
+}
+
+.fac-card__head {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.fac-card__name {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--c-text);
+  word-break: keep-all;
+}
+
+.fac-card__tag {
+  flex-shrink: 0;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.fac-card__tag--public {
+  color: var(--c-primary-dark);
+  background: rgb(63 143 138 / 0.14);
+}
+
+.fac-card__tag--private {
+  color: #7a6f80;
+  background: rgb(122 111 128 / 0.12);
+}
+
+.fac-card__tag--stale {
+  color: var(--stale);
+  background: var(--stale-bg);
+}
+
+.fac-card__addr {
+  margin: 5px 0 0;
+  font-size: 13px;
+  color: var(--c-text-sub);
+  word-break: keep-all;
+}
+
+.fac-card__fees {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--c-line);
+  font-size: 14px;
+}
+
+.fac-card__fee {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 5px;
+}
+
+.fac-card__fee b {
+  font-variant-numeric: tabular-nums;
+}
+
+.fac-card__fee--in b {
+  color: var(--fee-low);
+}
+
+.fac-card__fee--out b {
+  color: var(--fee-high);
+}
+
+.fac-card__fee span {
+  font-size: 12px;
+  color: var(--c-text-sub);
+}
+
+@media (max-width: 768px) {
+  .kv {
+    grid-template-columns: 78px 1fr;
+    font-size: 14px;
+  }
+
+  .photo-strip {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .route p,
+  .intro-text p {
+    font-size: 14px;
+  }
+}

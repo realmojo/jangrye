@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="요양정보">
+  <!-- 다크 셸 위에서도 보이도록 배경을 채운다 -->
+  <rect width="64" height="64" rx="14" fill="#6b7f56"/>
+  <!-- 돌봄을 뜻하는 손 위의 하트 -->
+  <path d="M32 45.5c-.6 0-1.2-.2-1.6-.6l-8.8-8.2c-3.2-3-3.4-8-.4-11.1 2.8-2.9 7.4-3 10.4-.3l.4.4.4-.4c3-2.7 7.6-2.6 10.4.3 3 3.1 2.8 8.1-.4 11.1l-8.8 8.2c-.4.4-1 .6-1.6.6z" fill="#f9f9f7"/>
+  <path d="M14 50c3.4 3.4 8.6 5.4 18 5.4S46.6 53.4 50 50" stroke="#b8c89e" stroke-width="4" stroke-linecap="round" fill="none"/>
+</svg>
