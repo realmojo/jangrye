@@ -103,7 +103,12 @@ export default async function FacilityView({ facility }: { facility: Facility })
                 {region}
               </a>
             </nav>
-            <h1 className="entry-title">{f.name}</h1>
+            {/* 시설명만 h1 에 두면 "춘천안식원 요금", "춘천안식원 가는 길" 같은
+                실제 검색어와 맞물리지 않는다. 사람들이 함께 치는 말을 붙인다.
+                다만 나열은 셋까지만 한다 — 더 늘리면 키워드 뭉치로 읽힌다. */}
+            <h1 className="entry-title">
+              {f.name} {isCrem ? "화장 요금" : "빈소 요금"}·위치·가는 길
+            </h1>
             <div className="entry-header__bottom">
               <div className="entry-meta">
                 <span>{group?.name ?? f.group_name}</span>
@@ -133,6 +138,16 @@ export default async function FacilityView({ facility }: { facility: Facility })
               수에 따라 달라집니다.
             </p>
           )}
+
+          {/* 페이지가 길어서 원하는 대목으로 바로 뛰게 한다. 겸해서 '주차'
+              처럼 h1 에 못 넣은 검색어가 화면 위쪽에 놓인다. */}
+          <nav className="jump" aria-label="이 페이지 안에서 이동">
+            <a href="#fee">{isCrem ? "화장 요금" : "빈소 요금"}</a>
+            <a href="#place">위치·전화</a>
+            {(f.traffic_public || f.traffic_car) && <a href="#route">가는 길</a>}
+            <a href="#facility">주차·편의시설</a>
+            {f.photos.length > 0 && <a href="#photo">사진</a>}
+          </nav>
 
           <div className="ad-slot">
             <Adsense slotId={AD_SLOTS.top} format="fluid" />
@@ -175,8 +190,8 @@ export default async function FacilityView({ facility }: { facility: Facility })
           </section>
 
           {isCrem && (
-            <section className="panel">
-              <h2 className="panel__title">화장 요금</h2>
+            <section className="panel" id="fee">
+              <h2 className="panel__title">{f.name} 화장 요금 (관내·관외)</h2>
               <p className="panel__desc">
                 같은 조합이 여러 값으로 등록된 경우 가장 낮은 금액을 적었습니다.
               </p>
@@ -185,7 +200,7 @@ export default async function FacilityView({ facility }: { facility: Facility })
           )}
 
           {!isCrem && (
-            <>
+            <div id="fee">
               <PriceTable
                 prices={prices}
                 kind="시설사용료"
@@ -204,7 +219,7 @@ export default async function FacilityView({ facility }: { facility: Facility })
                 title="장사용품"
                 desc="관·수의·유골함 등입니다. 같은 이름이라도 규격과 재질이 다를 수 있습니다."
               />
-            </>
+            </div>
           )}
 
           {isCrem && (

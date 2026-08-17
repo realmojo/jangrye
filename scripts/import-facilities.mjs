@@ -382,8 +382,51 @@ async function insertChunks(client, table, rows, label) {
   }
 }
 
+/**
+ * 홈페이지 판정을 이어받는다.
+ *
+ * 적재는 DELETE + INSERT 라서 그냥 넣으면 `homepage_ok` 가 초기화되고, 죽은
+ * 링크 115개가 화면에 다시 나타난다. 주소가 그대로인 시설은 예전 판정을
+ * 살려 두고, 주소가 바뀐 곳만 null 로 남겨 다시 검사받게 한다.
+ */
+async function carryHomepageVerdicts(client, facilities) {
+  const prev = new Map();
+  const PAGE = 900;
+  for (let from = 0; ; from += PAGE) {
+    const { data, error } = await client
+      .from("jangrye_facilities")
+      .select("facility_cd, homepage, homepage_ok, homepage_status, homepage_checked_at")
+      .not("homepage_ok", "is", null)
+      .order("facility_cd")
+      .range(from, from + PAGE - 1);
+    if (error) {
+      console.warn(`  ! 기존 홈페이지 판정을 못 읽었다: ${error.message}`);
+      return 0;
+    }
+    for (const r of data ?? []) prev.set(r.facility_cd, r);
+    if ((data ?? []).length < PAGE) break;
+  }
+
+  let carried = 0;
+  for (const f of facilities) {
+    const p = prev.get(f.facility_cd);
+    if (!p || p.homepage !== f.homepage) continue;
+    f.homepage_ok = p.homepage_ok;
+    f.homepage_status = p.homepage_status;
+    f.homepage_checked_at = p.homepage_checked_at;
+    carried += 1;
+  }
+  return carried;
+}
+
 async function load({ facilities, cremFees, prices }) {
   const client = db();
+
+  const carried = await carryHomepageVerdicts(client, facilities);
+  if (carried) {
+    console.log(`  홈페이지 판정 ${carried}곳을 이어받았습니다.`);
+    console.log(`  주소가 새로 바뀐 곳은 scripts/check-homepages.mjs 로 다시 확인할 것.`);
+  }
 
   // 전량 교체. 이번에 안 온 시설이 예전 값으로 남으면 폐업한 곳이 계속 보인다.
   // 이 프로젝트는 pg_safeupdate 가 켜져 있어 WHERE 없는 DELETE 가 막힌다.

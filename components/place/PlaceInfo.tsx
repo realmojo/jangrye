@@ -4,6 +4,7 @@ import {
   formatDate,
   mapUrl,
   photoUrl,
+  showHomepage,
   splitLines,
   type Facility,
 } from "@/lib/facilities";
@@ -26,8 +27,8 @@ export default function PlaceInfo({ facility }: { facility: Facility }) {
   return (
     <>
       {photos.length > 0 && (
-        <section className="panel">
-          <h2 className="panel__title">사진</h2>
+        <section className="panel" id="photo">
+          <h2 className="panel__title">{f.name} 사진</h2>
           <p className="panel__desc">
             시설이 e하늘에 등록한 사진입니다. 촬영 시점은 표시되지 않습니다.
           </p>
@@ -51,8 +52,8 @@ export default function PlaceInfo({ facility }: { facility: Facility }) {
         </section>
       )}
 
-      <section className="panel">
-        <h2 className="panel__title">어디에 있나</h2>
+      <section className="panel" id="place">
+        <h2 className="panel__title">위치와 전화번호</h2>
         <dl className="kv">
           {f.address && (
             <>
@@ -71,7 +72,7 @@ export default function PlaceInfo({ facility }: { facility: Facility }) {
               </dd>
             </>
           )}
-          {f.homepage && (
+          {showHomepage(f) && f.homepage && (
             <>
               <dt>홈페이지</dt>
               <dd>
@@ -117,8 +118,8 @@ export default function PlaceInfo({ facility }: { facility: Facility }) {
       </section>
 
       {(f.traffic_public || f.traffic_car) && (
-        <section className="panel">
-          <h2 className="panel__title">가는 길</h2>
+        <section className="panel" id="route">
+          <h2 className="panel__title">가는 길 — 대중교통·자가용</h2>
           {f.traffic_public && (
             <div className="route">
               <h3 className="route__title">대중교통</h3>
@@ -143,8 +144,8 @@ export default function PlaceInfo({ facility }: { facility: Facility }) {
       )}
 
       {(known.length > 0 || f.park_cnt || f.mortuary_cnt || f.charnel_cnt) && (
-        <section className="panel">
-          <h2 className="panel__title">시설 규모와 편의</h2>
+        <section className="panel" id="facility">
+          <h2 className="panel__title">주차·편의시설과 규모</h2>
           <dl className="kv">
             {f.mortuary_cnt !== null && (
               <>

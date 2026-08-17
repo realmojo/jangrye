@@ -53,7 +53,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
           : 0.6,
   }));
 
-  return [
+  const all = [
     ...statics,
     ...SIDOS.map((s) => ({
       url: absoluteUrl(`/${s.slug}`),
@@ -70,4 +70,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     })),
     ...facilities,
   ];
+
+  // **주소가 겹치는 것을 걷어낸다.** 시군구 없이 시도 본청에 등록된 시설이
+  // 있는 곳(서울·세종·인천 등 8곳)은 region_slug 가 시도 슬러그와 같아서
+  // 같은 URL 이 두 번 들어간다. 먼저 온 항목(시도)을 남긴다.
+  const seen = new Set<string>();
+  return all.filter((e) => (seen.has(e.url) ? false : (seen.add(e.url), true)));
 }

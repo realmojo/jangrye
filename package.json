@@ -14,7 +14,8 @@
     "typecheck": "tsc --noEmit",
     "probe:facilities": "node scripts/import-facilities.mjs --probe",
     "import:facilities": "node scripts/import-facilities.mjs",
-    "load:facilities": "node scripts/import-facilities.mjs --load-only"
+    "load:facilities": "node scripts/import-facilities.mjs --load-only",
+    "check:homepages": "node scripts/check-homepages.mjs"
   },
   "dependencies": {
     "@opennextjs/cloudflare": "^1.20.2",

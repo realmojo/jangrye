@@ -116,6 +116,14 @@ export interface Facility {
   tel: string | null;
   fax: string | null;
   homepage: string | null;
+  /**
+   * 홈페이지가 실제로 열리는가. `false` 면 화면에 링크를 그리지 않는다.
+   * `null` 은 아직 확인 안 했다는 뜻이라 일단 보여준다.
+   * scripts/check-homepages.mjs 가 채운다 — 476곳 중 115곳이 죽어 있었다.
+   */
+  homepage_ok: boolean | null;
+  homepage_status: string | null;
+  homepage_checked_at: string | null;
   is_public: boolean | null;
   manage_class: string | null;
   hall_type: string | null;
@@ -203,7 +211,7 @@ export const SCOPE_NOTE: Record<Scope, string> = {
 const FACILITY_COLUMNS = "*";
 const CACHE_SECONDS = 3600;
 /** 조회 결과의 모양이 바뀌면 반드시 올린다 */
-const CACHE_VERSION = "jangrye-v1";
+const CACHE_VERSION = "jangrye-v2";
 
 async function fetchFacilitiesByGroup(groupCd: string): Promise<Facility[]> {
   if (!supabaseAdmin) return [];
@@ -520,6 +528,17 @@ export function mapUrl(f: Facility): string | null {
 export function directionsUrl(f: Facility): string | null {
   if (f.lat === null || f.lng === null) return null;
   return `https://map.kakao.com/link/to/${encodeURIComponent(f.name)},${f.lat},${f.lng}`;
+}
+
+/**
+ * 홈페이지 링크를 그려도 되는가.
+ *
+ * e하늘에 등록된 주소가 갱신되지 않아 도메인이 만료된 곳이 있다. 죽은 링크를
+ * 내보내면 유족이 급할 때 막힌 곳으로 가게 되므로 확인된 사망은 감춘다.
+ * 아직 확인하지 않은 것(null)은 보여준다 — 멀쩡한 링크를 숨기는 쪽이 더 손해다.
+ */
+export function showHomepage(f: Pick<Facility, "homepage" | "homepage_ok">): boolean {
+  return Boolean(f.homepage) && f.homepage_ok !== false;
 }
 
 /** 시설의 지역 이름. `서울 서초구` / 시군구가 없으면 `세종` */

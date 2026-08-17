@@ -1422,8 +1422,17 @@ a.cta-btn {
   font-size: 17px;
 }
 
-/* 보조 버튼. 밝은 본문판 위에 얹히므로 테두리만 쓴다. */
+/* 보조 버튼. 밝은 본문판 위에 얹히므로 테두리만 쓴다.
+ *
+ * **선택자에서 `a.` 를 빼면 글씨가 사라진다.** 위쪽에 `a.cta-btn { color: #fff }`
+ * (명시도 0,1,1) 가 있어서 `.cta-btn--ghost`(0,1,0) 만으로는 진다. 그러면 밝은
+ * 배경에 흰 글씨가 얹혀 버튼이 빈 칸처럼 보인다.
+ *
+ * 물려받은 규칙은 `.entry-content` 안을 전제했지만 이 사이트의 보조 버튼은
+ * `.panel` 안에 있다. 그래서 본문 밖에서도 이기도록 `a.cta-btn.cta-btn--ghost`
+ * (0,2,1) 로 못 박는다. */
 .entry-content a.cta-btn--ghost,
+a.cta-btn.cta-btn--ghost,
 .cta-btn--ghost {
   background: transparent;
   color: var(--c-primary-dark);
@@ -1431,8 +1440,10 @@ a.cta-btn {
   box-shadow: none;
 }
 
+a.cta-btn.cta-btn--ghost:hover,
 .cta-btn--ghost:hover {
   background: var(--c-primary-light);
+  color: var(--c-primary-dark);
 }
 
 /* 주 버튼 아래 보조 링크 줄 */
@@ -2006,5 +2017,48 @@ a.cta-btn {
   .route p,
   .intro-text p {
     font-size: 14px;
+  }
+}
+
+/* ---- 페이지 안 이동 (요금 · 위치 · 가는 길 · 주차) ----
+   시설 상세가 길어서 원하는 대목으로 바로 뛰게 한다. 헤더가 sticky 라
+   앵커로 뛰면 제목이 헤더에 가려지므로 scroll-margin-top 을 함께 준다. */
+.jump {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin: 18px 0 0;
+}
+
+.jump a {
+  padding: 7px 14px;
+  border: 1px solid var(--c-line);
+  border-radius: 20px;
+  background: var(--c-surface);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--c-primary-dark);
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.jump a:hover {
+  background: var(--c-primary-light);
+  border-color: var(--c-accent);
+}
+
+.panel[id],
+div[id="fee"] {
+  scroll-margin-top: 76px;
+}
+
+@media (max-width: 768px) {
+  .jump a {
+    padding: 6px 11px;
+    font-size: 12px;
+  }
+
+  .panel[id],
+  div[id="fee"] {
+    scroll-margin-top: 64px;
   }
 }
